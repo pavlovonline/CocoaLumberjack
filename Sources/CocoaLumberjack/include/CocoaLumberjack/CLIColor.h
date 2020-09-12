@@ -13,7 +13,6 @@
 //   to endorse or promote products derived from this software without specific
 //   prior written permission of Deusty, LLC.
 
-#if TARGET_OS_OSX
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -49,4 +48,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 NS_ASSUME_NONNULL_END
 
-#endif
+
