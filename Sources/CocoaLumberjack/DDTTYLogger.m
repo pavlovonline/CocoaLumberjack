@@ -729,18 +729,7 @@ static DDTTYLogger *sharedInstance;
     }
 
     #elif defined(DD_CLI) || !__has_include(<AppKit/NSColor.h>)
-
-    // OS X without AppKit
-
-    [color getRed:rPtr green:gPtr blue:bPtr alpha:NULL];
-
     #else /* if TARGET_OS_IPHONE */
-
-    // OS X with AppKit
-
-    NSColor *safeColor = [color colorUsingColorSpaceName:NSCalibratedRGBColorSpace];
-
-    [safeColor getRed:rPtr green:gPtr blue:bPtr alpha:NULL];
     #endif /* if TARGET_OS_IPHONE */
 }
 

@@ -24,8 +24,6 @@
 #if TARGET_OS_IOS
     #import <UIKit/UIDevice.h>
     #import <UIKit/UIApplication.h>
-#elif !defined(DD_CLI) && __has_include(<AppKit/NSApplication.h>)
-    #import <AppKit/NSApplication.h>
 #endif
 
 // Disable legacy macros
@@ -179,35 +177,11 @@ static NSUInteger _numProcessors;
     if (self) {
         self._loggers = [[NSMutableArray alloc] initWithCapacity:4];
 
-#if TARGET_OS_IOS
-        NSString *notificationName = UIApplicationWillTerminateNotification;
-#else
-        NSString *notificationName = nil;
-
-        // On Command Line Tool apps AppKit may not be available
-#if !defined(DD_CLI) && __has_include(<AppKit/NSApplication.h>)
-        if (NSApp) {
-            notificationName = NSApplicationWillTerminateNotification;
-        }
-#endif
-
-        if (!notificationName) {
-            // If there is no NSApp -> we are running Command Line Tool app.
-            // In this case terminate notification wouldn't be fired, so we use workaround.
-            __weak __auto_type weakSelf = self;
-            atexit_b (^{
-                [weakSelf applicationWillTerminate:nil];
-            });
-        }
-
-#endif /* if TARGET_OS_IOS */
-
-        if (notificationName) {
-            [[NSNotificationCenter defaultCenter] addObserver:self
-                                                     selector:@selector(applicationWillTerminate:)
-                                                         name:notificationName
-                                                       object:nil];
-        }
+        __weak __auto_type weakSelf = self;
+        atexit_b (^{
+            [weakSelf applicationWillTerminate:nil];
+        });
+        
     }
 
     return self;
